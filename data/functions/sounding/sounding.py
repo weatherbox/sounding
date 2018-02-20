@@ -81,6 +81,8 @@ def fetch_point(point_id, year, month, dayh):
     # Station information and sounding indices
     # http://weather.uwyo.edu/upperair/indices.html
     infos = pre[1].splitlines()
+    if infos[1].split(": ")[0].split()[1] == 'identifier':
+        infos = infos[1:]
     info = [row.split(": ")[1] for row in infos[1:]]
     labels = [
         'ID', 'TIME', 'SLAT', 'SLON', 'SELV',
