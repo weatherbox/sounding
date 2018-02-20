@@ -68,14 +68,23 @@ def fetch_point(point_id, year, month, dayh):
     levels = {}
     for row in rows[5:]:
         d = row.split()
+        df = [float(v) for v in d]
         pres = d[0]
-        data = d[1:]
+        data = df[1:]
+
+        if len(d) == 2:
+            continue
 
         if len(d) == 7: # no dew point
-            data = d[1:3] + [None, None, None] + d[3:6] + [None, d[6]]
+            data = df[1:3] + [None, None, None] + df[3:6] + [None, df[6]]
         elif len(d) == 5: # no wind
-            data = d[1:3] + [None, None, None, None, None, d[3], None, d[4]]
-        
+            data = df[1:3] + [None, None, None, None, None, df[3], None, df[4]]
+    
+        # int 
+        for i in [0, 3, 5, 6]:
+            if data[i]:
+                data[i] = int(data[i])
+
         levels[pres] = data
 
     # Station information and sounding indices
@@ -96,7 +105,10 @@ def fetch_point(point_id, year, month, dayh):
 
     indices = {}
     for label, value in zip(labels, info):
-        indices[label] = value
+        if label in ['ID', 'TIME']:
+            indices[label] = value
+        else:
+            indices[label] = float(value)
 
     return { 'name': name, 'indices': indices, 'levels': levels }
 
