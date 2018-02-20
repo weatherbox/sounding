@@ -23,9 +23,39 @@ class SoundingGL {
     }
 
     initMap(){
-        var geojson = this.createGeojson(500);
+        this.show(500);
+
+    }
+
+    show(level){
+        var geojson = this.createGeojson(level);
         console.log(geojson);
 
+        var dataid = 'sounding-' + level;
+        this.map.addSource(dataid, {
+            type: 'geojson',
+            data: geojson
+        });
+
+        this.map.addLayer({
+            id: 'wind-arrow',
+            type: 'symbol',
+            source: dataid,
+            layout: {
+                'text-field': String.fromCharCode("0xe927"),
+                'text-rotate': { 
+                    'type': 'identity',
+                    'property': 'wdir'
+                },
+                'text-rotation-alignment': 'map',
+                'text-font': ['windbarb Regular'],
+                'text-size': 100,
+                'text-line-height': 1,
+                'text-padding': 0,
+                'text-allow-overlap': true,
+                'icon-optional': true
+            }
+        });
     }
 
     createGeojson(level){
