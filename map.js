@@ -12,6 +12,6 @@ var map = new mapboxgl.Map({
 });
 
 map.on('load', function() {
-    //window.amedas = new AmedasGL(map);
+    window.sounding = new SoundingGL(map);
 });
 
