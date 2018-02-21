@@ -73,7 +73,7 @@ def fetch_point(point_id, year, month, dayh):
         pres = d[0]
         data = df[1:]
 
-        if len(d) == 2:
+        if len(d) < 5:
             continue
 
         if len(d) == 7: # no dew point
