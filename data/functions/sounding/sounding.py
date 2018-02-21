@@ -26,7 +26,8 @@ def fetch_all():
 
     data = {}
     for id in ids:
-        data[id] = fetch_point(id, year, month, dayh)
+        d = fetch_point(id, year, month, dayh)
+        if d: data[id] = d
 
     data['time'] = time
 
