@@ -16,11 +16,25 @@ function generateWindBarb(d){
     var svg = d3.select(document.body).append("svg")
         .attr("xmlns", "http://www.w3.org/2000/svg")
         .attr("height", size)
-        .attr("width", size);
+        .attr("width", size)
+        .attr("viewBox", "0 0 " + size + " " + size);
+
+    appendBarbGroup(svg, d, 180);
+    appendBarbGroup(svg, d, 0);
+
+
+    var svgstr = document.body.innerHTML;
+    fs.writeFile("windbarb-" + (d / 5) + ".svg" , svgstr);
+}
+
+function appendBarbGroup(svg, d, rotate){
     var thisbarb = svg.append('g')
         .attr("stroke", "#000")
-        .attr("transform", "translate("+half+","+half+") rotate(180)");
-    
+        .attr("transform", "translate("+half+","+half+") rotate("+rotate+")");
+    if (rotate == 0){
+        thisbarb.attr("opacity", 0);
+    }
+
     var flags = Math.floor(d/50);
     var pennants = Math.floor((d - flags*50)/10);
     var halfpennants = Math.floor((d - flags*50 - pennants*10)/5);
@@ -62,8 +76,6 @@ function generateWindBarb(d){
         px -= 3;
     }
 
-    var svgstr = document.body.innerHTML;
-    fs.writeFile("windbarb-" + (d / 5) + ".svg" , svgstr);
 }
 
 
