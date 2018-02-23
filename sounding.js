@@ -38,22 +38,17 @@ class SoundingGL {
         });
 
         this.map.addLayer({
-            id: 'wind-arrow',
+            id: 'windbarb',
             type: 'symbol',
             source: dataid,
             layout: {
-                'text-field': String.fromCharCode("0xe927"),
-                'text-rotate': { 
+                'icon-image': 'windbarb-{wicon}',
+                'icon-rotate': { 
                     'type': 'identity',
                     'property': 'wdir'
                 },
-                'text-rotation-alignment': 'map',
-                'text-font': ['windbarb Regular'],
-                'text-size': 100,
-                'text-line-height': 1,
-                'text-padding': 0,
-                'text-allow-overlap': true,
-                'icon-optional': true
+                'icon-rotation-alignment': 'map',
+                'icon-allow-overlap': true
             }
         });
     }
@@ -71,16 +66,17 @@ class SoundingGL {
                 properties: {
                     id: id,
                     name: d.name,
-                    temp: +dd[1],
-                    dwpt: (dd[2]) ? +dd[2] : null,
-                    wdir: +dd[5],
-                    wspeed: +dd[6]
+                    temp: dd[1],
+                    dwpt: dd[2],
+                    wdir: dd[5],
+                    wspeed: dd[6],
+                    wicon: Math.round(dd[6] / 5)
                 },
                 geometry: {
                     type: 'Point',
                     coordinates: [
-                        +d.indices.SLON,
-                        +d.indices.SLAT
+                        d.indices.SLON,
+                        d.indices.SLAT
                     ]
                 }
             });
