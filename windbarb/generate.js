@@ -3,8 +3,8 @@ var fs = require("fs");
 var jsdom = require("jsdom").jsdom;
 
 
-var size = 80;
-var half = size / 2;
+var height = 80;
+var width = 40;
 var barbsize = 30;
 var speeds = d3.range(5, 205, 5);
 speeds.forEach(function(d) {
@@ -15,9 +15,9 @@ function generateWindBarb(d){
     var document = jsdom();
     var svg = d3.select(document.body).append("svg")
         .attr("xmlns", "http://www.w3.org/2000/svg")
-        .attr("height", size)
-        .attr("width", size)
-        .attr("viewBox", "0 0 " + size + " " + size);
+        .attr("height", height)
+        .attr("width", width)
+        .attr("viewBox", "0 0 " + width + " " + height);
 
     appendBarbGroup(svg, d, 180);
     appendBarbGroup(svg, d, 0);
@@ -30,7 +30,7 @@ function generateWindBarb(d){
 function appendBarbGroup(svg, d, rotate){
     var thisbarb = svg.append('g')
         .attr("stroke", "#000")
-        .attr("transform", "translate("+half+","+half+") rotate("+rotate+")");
+        .attr("transform", "translate("+(width/2)+","+(height/2)+") rotate("+rotate+")");
     if (rotate == 0){
         thisbarb.attr("opacity", 0);
     }
