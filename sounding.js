@@ -34,15 +34,24 @@ class SoundingGL {
         this._initMapEvent();
     }
 
-    show (level){
-        var geojson = this.createGeojson(level);
-        console.log(geojson);
+    changeLevel (level){
+        this.remove();
+        this.show(level);
+    }
 
+    show (level){
+        this.level = level;
         var dataid = 'sounding-' + level;
-        this.map.addSource(dataid, {
-            type: 'geojson',
-            data: geojson
-        });
+
+        if (!this.map.getSource(dataid)){
+            var geojson = this.createGeojson(level);
+            console.log(geojson);
+
+            this.map.addSource(dataid, {
+                type: 'geojson',
+                data: geojson
+            });
+        }
 
         this.map.addLayer({
             id: 'wind-barb',
@@ -111,6 +120,13 @@ class SoundingGL {
         }, 'dwpt-label');
     }
 
+    remove (){
+        this.map.removeLayer('wind-barb');
+        this.map.removeLayer('temp-label');
+        this.map.removeLayer('dwpt-label');
+        this.map.removeLayer('name-label');
+    }
+
     createGeojson (level){
         var features = [];
 
@@ -118,6 +134,7 @@ class SoundingGL {
             if (id == 'time') continue;
             var d = this.data[id];
             var dd = d.levels[level + '.0'];
+            if (!dd) dd = [null, null, null, 0, 0, 0, 0];
 
             features.push({
                 type: 'Feature',
@@ -125,7 +142,7 @@ class SoundingGL {
                     id: id,
                     name: d.name,
                     height: dd[0],
-                    tempf: dd[1].toFixed(1),
+                    tempf: (dd[1]) ? dd[1].toFixed(1) : "",
                     dwptf: (dd[2]) ? dd[2].toFixed(1) : "",
                     wdir: dd[5],
                     wspeed: dd[6],
