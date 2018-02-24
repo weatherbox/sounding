@@ -10,10 +10,11 @@ class SoundingGL {
             console.log(data);
             self.data = data;
             self.initMap();
+            self.showTime();
         });
     }
 
-    _fetchSoundingJSON(callback){
+    _fetchSoundingJSON (callback){
         fetch(url)
             .then(function(res){
                 return res.json();
@@ -21,13 +22,19 @@ class SoundingGL {
                 callback(json);
             });
     }
+    
+    showTime (){
+        var time = d3.timeParse("%Y%m%d%H")(this.data.time);
+        var timestr = d3.timeFormat("%HZ %d %b %Y")(time);
+        window.mapTime.set(timestr);
+    }
 
-    initMap(){
+    initMap (){
         this.show(500);
         this._initMapEvent();
     }
 
-    show(level){
+    show (level){
         var geojson = this.createGeojson(level);
         console.log(geojson);
 
@@ -104,7 +111,7 @@ class SoundingGL {
         }, 'dwpt-label');
     }
 
-    createGeojson(level){
+    createGeojson (level){
         var features = [];
 
         for (var id in this.data){
@@ -160,7 +167,7 @@ class SoundingGL {
         }
     }
 
-    _isTouchDevice() {
+    _isTouchDevice () {
         return (('ontouchstart' in window)
             || (navigator.MaxTouchPoints > 0)
             || (navigator.msMaxTouchPoints > 0));

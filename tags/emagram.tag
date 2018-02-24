@@ -22,8 +22,5 @@
 	</script>
 
 	<style>
-		#emagram svg {
-			width: 100%;
-		}
 	</style>
 </emagram>

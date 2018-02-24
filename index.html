@@ -13,6 +13,7 @@
 </head>
 <body>
 	<div id='map'></div>
+	<map-time></map-time>
 
 	<info-bar></info-bar>
 
@@ -29,11 +30,13 @@
 	<script src="emagram/d3-emagram.js"></script>
 
 	<!-- riot -->
+	<script type="riot/tag" src="tags/map-time.tag"></script>
 	<script type="riot/tag" src="tags/info-bar.tag"></script>
 	<script type="riot/tag" src="tags/emagram.tag"></script>
 	<script src="https://cdn.jsdelivr.net/npm/riot@3.7/riot+compiler.min.js"></script>
 	<script>
 		riot.compile(function() {
+			window.mapTime = riot.mount('map-time')[0];
 			window.infoBar = riot.mount('info-bar')[0];
 		});
 	</script>
