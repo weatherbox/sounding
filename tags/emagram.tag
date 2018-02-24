@@ -8,9 +8,11 @@
 		this.emagram = null;
 
 		plot (data){
-			console.log(data);
 			if (!this.emagram){
-				this.emagram = new Emagram("#emagram", 480, 480);
+				var mobile = $(window).width() < 640;
+				var size = (mobile) ? 480 : 600;
+				this.emagram = new Emagram("#emagram", size, size);
+
 			}else{
 				this.emagram.clear();
 			}
@@ -18,4 +20,10 @@
 			this.emagram.plot(data);
 		}
 	</script>
+
+	<style>
+		#emagram svg {
+			width: 100%;
+		}
+	</style>
 </emagram>

@@ -99,7 +99,7 @@
 
 	<style>
 		#sidebar {
-			width: 480px;
+			width: 600px;
 			padding:10px;
 			transition: transform .5s ease;
 			height: 100%;
