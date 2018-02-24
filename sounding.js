@@ -188,7 +188,7 @@ class SoundingGL {
     select (e){
         var features = this.queryFeatures(e.point);   
         if (!features.length){
-            //window.infoBar.hide();
+            window.infoBar.hide();
             return;
         }
         
@@ -199,7 +199,7 @@ class SoundingGL {
         this._selectPopup(feature.geometry.coordinates, props.name);
 
         console.log(props.name, props.id);
-        //window.infoBar.showPoint(props.name, props.tid, value, this.onclose.bind(this));
+        window.infoBar.showPoint(props.name, value, this.data[props.id], this.onclose.bind(this));
     }
 
     _selectPopup (lnglat, text){

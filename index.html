@@ -14,6 +14,7 @@
 <body>
 	<div id='map'></div>
 
+	<info-bar></info-bar>
 
     <script src='//api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
 	<script src='//code.jquery.com/jquery-3.1.1.min.js'></script>
@@ -23,10 +24,17 @@
 	<script src="sounding.js"></script>
 	<script src="map.js"></script>
 
+	<!-- emagram -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="emagram/d3-emagram.js"></script>
+
 	<!-- riot -->
+	<script type="riot/tag" src="tags/info-bar.tag"></script>
+	<script type="riot/tag" src="tags/emagram.tag"></script>
 	<script src="https://cdn.jsdelivr.net/npm/riot@3.7/riot+compiler.min.js"></script>
 	<script>
 		riot.compile(function() {
+			window.infoBar = riot.mount('info-bar')[0];
 		});
 	</script>
 
