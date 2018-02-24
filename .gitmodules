@@ -1,0 +1,3 @@
+[submodule "emagram"]
+	path = emagram
+	url = https://github.com/weatherbox/emagram
