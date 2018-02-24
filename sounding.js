@@ -24,7 +24,7 @@ class SoundingGL {
 
     initMap(){
         this.show(500);
-
+        this._initMapEvent();
     }
 
     show(level){
@@ -38,7 +38,7 @@ class SoundingGL {
         });
 
         this.map.addLayer({
-            id: 'windbarb',
+            id: 'wind-barb',
             type: 'symbol',
             source: dataid,
             layout: {
@@ -138,6 +138,90 @@ class SoundingGL {
             type: 'FeatureCollection',
             features: features
         };
+    }
+    
+    
+    _initMapEvent (){
+        this._moving = false;
+        this._zooming = false;
+        this._popup = new mapboxgl.Popup({ closeButton: false, offset: [0, -10] });
+
+        var self = this;
+        if (this._isTouchDevice()){
+            this.map.on('mousemove', function (e){ self.select(e); });
+
+        }else{
+            this.map.on('click', function (e){ self.select(e); });
+            this.map.on('mousemove', function (e){ self._hover(e); });
+            this.map.on('movestart', function (){ self._moving = true; });
+            this.map.on('moveend',   function (){ self._moving = false; });
+            this.map.on('zoomstart', function (){ self._zooming = true; });
+            this.map.on('zoomend',   function (){ self._zooming = false; });
+        }
+    }
+
+    _isTouchDevice() {
+        return (('ontouchstart' in window)
+            || (navigator.MaxTouchPoints > 0)
+            || (navigator.msMaxTouchPoints > 0));
+    }
+
+
+    _hover (e){
+        if (this._moving || this._zooming) return false;
+
+        var features = this.queryFeatures(e.point);
+        map.getCanvas().style.cursor = (features.length) ? 'crosshair' : '';
+        
+        if (!features.length) {
+            this._popup.remove();
+            return;
+        }
+
+        var feature = features[0];
+        var text = feature.properties.name + ' ' + this.featureText(feature);
+        this._popup.setLngLat(feature.geometry.coordinates)
+            .setText(text)
+            .addTo(this.map);
+    }
+
+    select (e){
+        var features = this.queryFeatures(e.point);   
+        if (!features.length){
+            //window.infoBar.hide();
+            return;
+        }
+        
+        var feature = features[0];
+        var props = feature.properties;
+        var value = this.featureText(feature);
+
+        this._selectPopup(feature.geometry.coordinates, props.name);
+
+        console.log(props.name, props.id);
+        //window.infoBar.showPoint(props.name, props.tid, value, this.onclose.bind(this));
+    }
+
+    _selectPopup (lnglat, text){
+        if (this._sPopup) this._sPopup.remove();
+        this._sPopup = new mapboxgl.Popup({ closeButton: false, offset: [0, -10] });
+        this._sPopup.setLngLat(lnglat)
+            .setText(text)
+            .addTo(this.map);
+    }
+
+    onclose (){
+        if (this._sPopup) this._sPopup.remove();
+    }
+
+    queryFeatures (point){
+		return this.map.queryRenderedFeatures(point, {
+            layers: ['wind-barb', 'temp-label', 'dwpt-label', 'name-label']
+        });
+    }
+    featureText (feature){
+        var prop = feature.properties;
+		return prop.wdir + '° ' + prop.wspeed + 'kt';
     }
 }
 
