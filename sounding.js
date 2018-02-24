@@ -30,7 +30,8 @@ class SoundingGL {
     }
 
     initMap (){
-        this.show(500);
+        var init = this._getQueryType() || 500;
+        this.show(init);
         this._initMapEvent();
     }
 
@@ -40,12 +41,12 @@ class SoundingGL {
     }
 
     show (level){
+        if (level == this.level) return;
         this.level = level;
         var dataid = 'sounding-' + level;
 
         if (!this.map.getSource(dataid)){
             var geojson = this.createGeojson(level);
-            console.log(geojson);
 
             this.map.addSource(dataid, {
                 type: 'geojson',
@@ -118,6 +119,8 @@ class SoundingGL {
             },
             minzoom: 5.5
         }, 'dwpt-label');
+
+        this._setQueryType(level);
     }
 
     remove (){
@@ -246,6 +249,14 @@ class SoundingGL {
     featureText (feature){
         var prop = feature.properties;
 		return prop.wdir + '° ' + prop.wspeed + 'kt';
+    }
+
+    _getQueryType (){
+        return location.search.slice(1);
+    }
+
+    _setQueryType (type){
+        history.replaceState(null, null, '?' + type + location.hash);
     }
 }
 

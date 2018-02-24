@@ -1,17 +1,14 @@
 <map-type-dropdown>
 	<div id="layer-dropdown">
 		<select class="ui selection dropdown compact small">
-			<option value="100">100hPa</option>
-			<option value="200">200hPa</option>
-			<option value="300">300hPa</option>
-			<option selected="" value="500">500hPa</option>
-			<option value="700">700hPa</option>
-			<option value="850">850hPa</option>
-			<option value="1000">1000hPa</option>
+			<option each={ v in levels } selected={ v == selected } value={ v }>{ v }hPa</option>
 		</select>
 	</div>
 
 	<script>
+		this.levels = [100, 200, 300, 500, 700, 850, 1000];
+		this.selected = location.search.slice(1) || 500;	
+
 		// jquery init
 		this.on('mount', function() {
 			var self = this;
