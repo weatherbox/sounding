@@ -51,6 +51,57 @@ class SoundingGL {
                 'icon-allow-overlap': true
             }
         });
+
+        this.map.addLayer({
+            id: 'temp-label',
+            type: 'symbol',
+            source: dataid,
+            layout: {
+                'text-field': '{tempf}',
+                'text-size': {
+                    base: 1.5,
+                    stops: [[5, 10], [8, 12]]
+                },
+                'text-offset': [1.6, -0.6],
+                'text-allow-overlap': true
+            },
+            minzoom: 4.5
+        });
+
+        this.map.addLayer({
+            id: 'dwpt-label',
+            type: 'symbol',
+            source: dataid,
+            layout: {
+                'text-field': '{dwptf}',
+                'text-size': {
+                    base: 1.5,
+                    stops: [[5, 10], [8, 12]]
+                },
+                'text-offset': [1.6, 0.6],
+                'text-allow-overlap': false
+            },
+            minzoom: 4.5
+        });
+
+        this.map.addLayer({
+            id: 'name-label',
+            type: 'symbol',
+            source: dataid,
+            layout: {
+                'text-field': '{name}',
+                'text-size': 12,
+                'text-offset': {
+                    base: 2,
+                    stops: [[7, [0, 1.8]], [10, [0, 2.2]]]
+                },
+                'text-allow-overlap': true
+            },
+            paint: {
+                'text-color': '#333'
+            },
+            minzoom: 5.5
+        }, 'dwpt-label');
     }
 
     createGeojson(level){
@@ -66,8 +117,9 @@ class SoundingGL {
                 properties: {
                     id: id,
                     name: d.name,
-                    temp: dd[1],
-                    dwpt: dd[2],
+                    height: dd[0],
+                    tempf: dd[1].toFixed(1),
+                    dwptf: (dd[2]) ? dd[2].toFixed(1) : "",
                     wdir: dd[5],
                     wspeed: dd[6],
                     wicon: Math.round(dd[6] / 5)
