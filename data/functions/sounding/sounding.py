@@ -74,13 +74,12 @@ def fetch_point(point_id, year, month, dayh):
         pres = d[0]
         data = df[1:]
 
-        if len(d) < 5:
-            continue
-
         if len(d) == 7: # no dew point
             data = df[1:3] + [None, None, None] + df[3:6] + [None, df[6]]
         elif len(d) == 5: # no wind
             data = df[1:3] + [None, None, None, None, None, df[3], None, df[4]]
+        elif len(d) != 10:
+            continue
     
         # int 
         for i in [0, 3, 5, 6]:
